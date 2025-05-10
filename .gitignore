@@ -1,0 +1,127 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Node modules
+node_modules/
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.swp
+
+# Coverage
+coverage/
+*.lcov
+
+# Dependency directories
+node_modules/
+dist/
+build/
+
+# Production files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
+
+# Python files
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+*.egg
+
+# Environments and packages
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtualenv
+venv/
+env/
+ENV/
+*.pyc
+*.pyo
+
+# Docker
+*.tar
+docker-compose.override.yml
+
+# Database
+*.sqlite3
+*.db
+
+# Kubernetes
+*.yaml
+*.yml
+*.conf
+*.crt
+*.key
+
+# VS Code workspace
+.vscode/
+
+# JWT secrets and API keys
+secrets.json
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Frontend build artifacts
+dashboard/build/
+dashboard/.next/
+dashboard/.cache/
+dashboard/public/static/
+
+# Next.js
+.next/
+out/
+
+# Build artifacts
+*.out
+*.exe
+*.o
+*.a
+*.d
+
+# Kafka and Zookeeper data
+data/kafka/
+data/zookeeper/
+
+# Temporary files
+tmp/
+temp/
+.cache/
+*.bak
+
+# Local Docker volumes
+volumes/
+
+# GitHub
+.github/
