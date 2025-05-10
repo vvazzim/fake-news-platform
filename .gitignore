@@ -125,3 +125,4 @@ volumes/
 
 # GitHub
 .github/
+passwords.txt
