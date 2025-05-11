@@ -233,7 +233,7 @@ vision-dashboard-react-free/
     │   ├── Lists
     │   │   └── index.js
     │   ├── Navbars
-    │   │   ├── DashboardNavbar
+    │   │   ├── 
     │   │   │   ├── index.js
     │   │   │   └── styles.js
     │   │   ├── DefaultNavbar

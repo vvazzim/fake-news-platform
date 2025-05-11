@@ -1,20 +1,4 @@
-/*!
 
-=========================================================
-* Vision UI Free React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-free-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com/)
-* Licensed under MIT (https://github.com/creativetimofficial/vision-ui-free-react/blob/master LICENSE.md)
-
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -59,12 +43,12 @@ function SidenavCard({ color, ...rest }) {
           </VuiTypography>
           <VuiBox mb={1.825} mt={-1}>
             <VuiTypography variant="caption" color="white" fontWeight="regular">
-              Please check our docs
+              Please check our website's docs
             </VuiTypography>
           </VuiBox>
           <VuiButton
             component={Link}
-            href="https://www.creative-tim.com/learning-lab/react/quick-start/vision-ui-dashboard/"
+            href="https://github.com/vvazzim/fake-news-platform"
             target="_blank"
             rel="noreferrer"
             size="small"

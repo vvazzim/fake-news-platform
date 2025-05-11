@@ -37,7 +37,7 @@ function cardContent(theme) {
     color: white,
     position: "relative",
     zIndex: 2,
-    width: "100%",
+    width: "90%",
     height: "100%",
     p: 2,
 

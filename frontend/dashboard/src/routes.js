@@ -1,6 +1,5 @@
 // Vision UI Dashboard React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
 import Predictions from "layouts/predictions";
 import Visualization from "layouts/visualization";
 

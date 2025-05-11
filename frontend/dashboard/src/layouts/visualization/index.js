@@ -39,7 +39,6 @@ import colors from "assets/theme/base/colors";
 
 // Dashboard layout components
 import WelcomeMark from "layouts/dashboard/components/WelcomeMark";
-import Projects from "layouts/dashboard/components/Projects";
 import OrderOverview from "layouts/dashboard/components/OrderOverview";
 import ConfidenceRate from "layouts/dashboard/components/Confidence Rate";
 import ReferralTracking from "layouts/dashboard/components/ReferralTracking";

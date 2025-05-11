@@ -1,17 +1,4 @@
-/*!
 
-=========================================================
-* Vision UI Free React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/vision-ui-free-react
-* Copyright 2021 Creative Tim
-* Licensed under MIT
-* Design and Coded by Simmmple & Creative Tim
-
-=========================================================
-
-*/
 
 import { useState, useEffect, useMemo } from "react";
 
@@ -103,7 +90,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand=""
-            brandName="VISION UI FREE"
+            brandName="FAKE NEWS DETECTOR"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -122,7 +109,7 @@ export default function App() {
         <Sidenav
           color={sidenavColor}
           brand=""
-          brandName="VISION UI FREE"
+          brandName="FAKE NEWS DETECTOR"
           routes={routes}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
