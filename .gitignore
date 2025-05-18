@@ -76,13 +76,6 @@ docker-compose.override.yml
 *.sqlite3
 *.db
 
-# Kubernetes
-*.yaml
-*.yml
-*.conf
-*.crt
-*.key
-
 # VS Code workspace
 .vscode/
 

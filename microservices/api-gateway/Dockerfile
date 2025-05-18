@@ -2,15 +2,14 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# ✅ Installer bash + netcat-openbsd (spécifique)
+# Installer bash + netcat-openbsd (pour le script wait-for.sh)
 RUN apt-get update && apt-get install -y bash netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-COPY wait-for.sh .
 RUN chmod +x wait-for.sh
 
-# Mets le bon port ici selon le microservice
-CMD ["./wait-for.sh", "kafka:9092", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+CMD ./wait-for.sh kafka:9092 -- uvicorn main:app --host 0.0.0.0 --port 8000

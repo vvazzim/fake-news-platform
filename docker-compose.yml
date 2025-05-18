@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    ports:
+      - "9092:9092"
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=image_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/image_db
+    ports:
+      - "8000:8000"
+
+  text-analyzer:
+    image: text-analyzer
+    container_name: text-analyzer
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/image_db
+    ports:
+      - "8001:8001"
+
+  fusion-analyzer:
+    image: fusion-analyzer
+    container_name: fusion-analyzer
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/image_db
+    ports:
+      - "8002:8002"
+
+  frontend:
+    build:
+      context: ./frontend/dashboard
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - api-gateway
+
+volumes:
+  postgres_data:

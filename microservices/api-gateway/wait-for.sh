@@ -1,5 +1,5 @@
 #!/bin/bash
-# wait-for.sh
+
 
 host="$1"
 shift
@@ -12,4 +12,3 @@ done
 
 >&2 echo "✅ $host is up - executing command"
 exec $cmd
-chmod +x wait-for.sh

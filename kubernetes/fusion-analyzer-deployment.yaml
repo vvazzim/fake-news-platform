@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fusion-analyzer
+  labels:
+    app: fusion-analyzer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fusion-analyzer
+  template:
+    metadata:
+      labels:
+        app: fusion-analyzer
+    spec:
+      containers:
+        - name: fusion-analyzer
+          image: douns/fusion-analyzer:latest
+          ports:
+            - containerPort: 8002
+          env:
+            - name: DATABASE_URL
+              value: postgresql://user:password@postgres:5432/image_db
+            - name: KAFKA_BROKER
+              value: kafka:9092

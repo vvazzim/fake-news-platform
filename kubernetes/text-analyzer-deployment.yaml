@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-analyzer
+  labels:
+    app: text-analyzer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: text-analyzer
+  template:
+    metadata:
+      labels:
+        app: text-analyzer
+    spec:
+      containers:
+        - name: text-analyzer
+          image: douns/text-analyzer:latest
+          ports:
+            - containerPort: 8001
+          env:
+            - name: DATABASE_URL
+              value: postgresql://user:password@postgres:5432/image_db
+            - name: KAFKA_BROKER
+              value: kafka:9092
