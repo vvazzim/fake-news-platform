@@ -14,6 +14,7 @@ spec:
       labels:
         app: api-gateway
     spec:
+      serviceAccountName: api-gateway-sa
       containers:
         - name: api-gateway
           image: douns/api-gateway:2
