@@ -1,81 +1,128 @@
+# Fake News Platform
 
-# Fake News Detection Platform
+## Description
 
-## 🚀 Project Overview
+Ce projet est une plateforme d’analyse de fact distribuée basée sur une architecture microservices. Elle permet d’analyser, fusionner et visualiser la véracité de faits sous forme de texte, tout en assurant une scalabilité et une gestion modulaire.
 
-The Fake News Detection Platform is a distributed application designed to detect fake news using advanced natural language processing (NLP) models. The platform combines Big Data processing techniques with a modern web dashboard to display predictions and model performance metrics.
-
-### 💡 Objectives
-
-- Detect fake news using pre-trained NLP models (BERT, RoBERTa, Factify).
-- Process large volumes of data efficiently using a microservices architecture.
-- Visualize prediction results and model performance metrics through an interactive web dashboard.
-- Provide real-time text analysis and visualization of results.
+Le projet utilise Docker pour la containerisation et Kubernetes (via Minikube) pour l’orchestration. Le tout est routé via une passerelle API (`api-gateway`) et exposé par un service frontend via Ingress.
 
 ---
 
-## 🏗️ Architecture
+## Prérequis
 
-The platform is divided into two main parts:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
-1. **Backend:** Microservices architecture using FastAPI, Kafka (KRaft mode), PostgreSQL.
-2. **Frontend:** Interactive dashboard inspired by modern web UI practices, using React.
-
-### 🌐 Backend
-
-- **Microservices:**
-  - `text-analyzer`: Main microservice for text-based fake news detection.
-  - `fusion-analyzer`: Combines predictions from multiple models.
-  - `api-gateway`: Routes API requests to appropriate services.
-  - **Message Broker:** Kafka (configured in KRaft mode).
-  - **Database:** PostgreSQL for storing predictions.
-
-### 🖥️ Frontend
-
-- Built with **React**, inspired by modern dashboard designs.
-- Real-time prediction testing and performance visualization.
-- Model comparison and interactive charts for better insights.
+> On suppose que Minikube utilise le **driver Docker** :
+>
+> ```bash
+> minikube config set driver docker
+> ```
 
 ---
 
-## 📝 Prerequisites
+## Setup Instructions
 
-- Docker & Docker Compose
-- Python 3.10+
-- Node.js and npm
+### 1. Démarrer Minikube
 
----
+```bash
+minikube start --driver=docker
+```
 
-## 🧩 Installation
+### 2. Cloner le dépôt
 
-1. Clone the repository:
 ```bash
 git clone https://github.com/vvazzim/fake-news-platform.git
 cd fake-news-platform
 ```
 
-2. Set up environment variables:
-Create a `.env` file in the project root:
-```
-HF_TOKEN=<your-huggingface-token>
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_DB=image_db
+### 3. Construction des images Docker
+
+Depuis la racine du projet, build chaque microservice (ou uniquement ceux modifiés) :
+
+```bash
+docker build -t douns/api-gateway:latest microservices/api-gateway
+docker build -t douns/text-analyzer:latest microservices/text-analyzer
+docker build -t douns/fusion-analyzer:latest microservices/fusion-analyzer
+docker build -t douns/frontend:latest microservices/frontend
 ```
 
-3. Build and start the services:
+### 4. Activer Ingress NGINX
+
 ```bash
-docker-compose up --build
+minikube addons enable ingress
+```
+
+### 5. Déployer les microservices sur Kubernetes
+
+```bash
+kubectl apply -f kubernetes/
+```
+
+### 6. Suivre le statut des pods
+
+```bash
+kubectl get pods --watch
 ```
 
 ---
 
-## 📝 Usage
+## Accéder à l’application
 
-1. Start the services:
+### Vérifier l’adresse Ingress
+
 ```bash
-docker-compose up
+kubectl get ingress
 ```
 
-2. Access the dashboard:
-URL: `http://localhost:3000`
+---
+
+## Sécurisation Kubernetes (RBAC)
+
+Un mécanisme RBAC a été mis en place pour le service `api-gateway`, afin de limiter ses permissions au strict nécessaire :
+
+- Création d’un compte de service : `api-gateway-sa`
+- Définition d’un `Role` nommé `api-gateway-role`, autorisant uniquement la lecture des pods (`get`, `list`, `watch`) dans le namespace `default`.
+- Association via un `RoleBinding` nommé `api-gateway-binding`.
+
+Ce système permet d’appliquer le principe du moindre privilège à l’API Gateway.
+
+- En cas d’accès requis à des ressources inter-namespaces (comme `services` ou `nodes`), un `ClusterRole` nommé `api-gateway-cluster-role` a été défini.
+- Ce rôle est associé au compte de service `api-gateway-sa` via un `ClusterRoleBinding` nommé `api-gateway-cluster-binding`.
+
+Cela permet à `api-gateway` d’interagir avec des ressources globales du cluster, tout en respectant le principe du moindre privilège.
+
+Pour tester les droits du service, on peut utiliser la commande suivante :
+
+```bash
+kubectl auth can-i list pods --as=system:serviceaccount:default:api-gateway-sa
+
+```
+
+## Architecture des dossiers
+
+├── database<br>
+├── microservices/dashboard<br>
+├── microservices/<br>
+│ ├── api-gateway/<br>
+│ ├── text-analyzer/<br>
+│ ├── fusion-analyzer/<br>
+├── kubernetes/<br>
+│ └── \*.yaml<br>
+└── README.md
+
+```
+
+---
+
+## Informations supplémentaires
+
+- Le système repose sur une architecture microservices simple avec communication HTTP.
+- Les images Docker sont locales et utilisées directement par Minikube.
+- Les routes sont gérées via un Ingress NGINX.
+- `api-gateway` peut dépendre d’un Kafka externe (à brancher dans une version future si besoin).
+- Tous les services sont déployés dans le namespace par défaut (par simplicité).
+
+---
+```
